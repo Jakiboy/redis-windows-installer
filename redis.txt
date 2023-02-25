@@ -1,0 +1,1 @@
+Redis and the cube logo are registered trademarks of Redis Ltd.
