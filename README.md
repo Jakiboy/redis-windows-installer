@@ -5,15 +5,14 @@ Includes WSL compatibility (Debian).
 
 ## References
 
-- [Source](https://developer.redis.com/create/windows/)
+- [Source: developer.redis.com](https://developer.redis.com/create/windows/)
+- [Source: learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ## Requirements
 
 - Git Bash
 
 ## Make
-
-- Update binaries inside bin folder (If necessary)
   
 ```
 Then run compile.sh

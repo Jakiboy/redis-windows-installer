@@ -7,17 +7,19 @@ fi
 mkdir "build"
 sleep 2
 
-echo "Download ISCC..."
-git clone "https://github.com/Jakiboy/ISCC.git/" "./temp"
-mv "./temp/bin" "./compiler"
-rm -rf "./temp"
-sleep 2
+if [ ! -d "compiler" ]; then
+    echo "Download ISCC..."
+    git clone "https://github.com/Jakiboy/ISCC.git/" "./temp"
+    mv "./temp/bin" "./compiler"
+    rm -rf "./temp"
+    sleep 2
+    clear
+fi
 
-clear
 echo "Compile setup..."
 "$(pwd)/compiler/ISCC.exe" "$(pwd)/redis.iss" # Abs. path
 sleep 2
-clear
+# clear
 
 echo "--------------------"
 read -p "Press enter to exit"
