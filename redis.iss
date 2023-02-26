@@ -1,3 +1,11 @@
+; ======================================================================================================================
+; Redis - Windows Installer
+;
+; Author: Jihad Sinnaour (Jakiboy) <j.sinnaour.official@gmail.com>
+; URL: https://github.com/Jakiboy/redis-windows-installer
+; Copyright (C) 2023 Jihad Sinnaour. All rights reserved.
+; ======================================================================================================================
+
 ; Define:
 
 #define InstallerName "Redis - Windows Installer"
@@ -14,7 +22,6 @@
 AppId={{407C8EF1-43D0-466F-A957-69EECD440C4B}
 AppName={#InstallerName}
 AppVersion={#InstallerVersion}
-;AppVerName={#InstallerName} {#InstallerVersion}
 AppPublisher={#InstallerPublisher}
 AppPublisherURL={#InstallerURL}
 AppSupportURL={#InstallerURL}
@@ -30,7 +37,6 @@ WizardSmallImageFile={#InstallerRoot}\assets\small.bmp
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-;PrivilegesRequired=lowest
 
 ; Languages:
 
