@@ -37,6 +37,7 @@ WizardSmallImageFile={#InstallerRoot}\assets\small.bmp
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+AlwaysRestart=yes
 
 ; Languages:
 
@@ -69,15 +70,15 @@ Filename: "taskkill"; Parameters: "/im ""msiexec.exe"" /f"; Flags: runhidden;
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage {tmp}\\debian.appx"" "; WorkingDir: {tmp}; Flags: runhidden;
 
 ; Setup Debian package (Powershell)
-; (powershell.exe -ExecutionPolicy Bypass -Command "debian")
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""debian"" "; WorkingDir: {tmp}; Flags: runhidden;
+; (powershell.exe -ExecutionPolicy Bypass -Command "Debian install --root")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Debian install --root"" "; WorkingDir: {tmp}; Flags: runhidden;
 
 ; Install Redis (Powershell)
-; (powershell.exe -ExecutionPolicy Bypass -Command "wsl -d debian -u root -- apt-get update")
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get update"" "; WorkingDir: {tmp}; Flags: runhidden;
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get upgrade -y"" "; WorkingDir: {tmp}; Flags: runhidden;
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get install redis-server -y"" "; WorkingDir: {tmp}; Flags: runhidden;
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- service redis-server restart"" "; WorkingDir: {tmp}; Flags: runhidden;
+; (powershell.exe -ExecutionPolicy Bypass -Command "wsl -d Debian -u root -- apt-get update")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d Debian -u root -- apt-get update"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d Debian -u root -- apt-get upgrade -y"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d Debian -u root -- apt-get install redis-server -y"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d Debian -u root -- service redis-server restart"" "; WorkingDir: {tmp}; Flags: runhidden;
 
 ; Code:
 
