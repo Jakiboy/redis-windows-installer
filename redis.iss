@@ -40,17 +40,38 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ; Files:
 
 [Files]
-;Source: "{tmp}/debian.appx"; DestDir: "{tmp}"; Flags: external;
+Source: "{tmp}/debian.appx"; DestDir: {tmp}; Flags: deleteafterinstall external;
 Source: "{tmp}/wsl.msi"; DestDir: {tmp}; Flags: deleteafterinstall external;
 
 ; Run:
 
 [Run]
-; Install debian package
-;...
+; Enable WSL (Powershell)
+; (powershell.exe -ExecutionPolicy Bypass -Command "Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux"" "; WorkingDir: {tmp}; Flags: runhidden;
+
 ; Install WSL update
-; (msiexec.exe /i 'C:\tmp\wsl.msi' /qb)
-Filename: "msiexec.exe"; Parameters: "/i '{tmp}\\wsl.msi' /qb"; WorkingDir: {tmp};
+; (msiexec.exe /i "C:/tmp/wsl.msi" /qb)
+Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\\wsl.msi"" /qb"; WorkingDir: {tmp}; Flags: runhidden;
+
+; Close Microsoft installer
+; (taskkill /im "msiexec.exe" /f)
+Filename: "taskkill"; Parameters: "/im ""msiexec.exe"" /f"; Flags: runhidden;
+
+; Install Debian package (Powershell)
+; (powershell.exe -ExecutionPolicy Bypass -Command "Add-AppxPackage C:/tmp/debian.appx")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage {tmp}\\debian.appx"" "; WorkingDir: {tmp}; Flags: runhidden;
+
+; Setup Debian package (Powershell)
+; (powershell.exe -ExecutionPolicy Bypass -Command "debian")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""debian"" "; WorkingDir: {tmp}; Flags: runhidden;
+
+; Install Redis (Powershell)
+; (powershell.exe -ExecutionPolicy Bypass -Command "wsl -d debian -u root -- apt-get update")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get update"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get upgrade -y"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- apt-get install redis-server -y"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl -d debian -u root -- service redis-server restart"" "; WorkingDir: {tmp}; Flags: runhidden;
 
 ; Code:
 
@@ -77,7 +98,7 @@ function NextButtonClick(CurPageID: Integer): Boolean;
 begin
   if CurPageID = wpReady then begin
     DownloadPage.Clear;
-    // Download debian package for WSL (https://aka.ms/wsl-debian-gnulinux)
+    // Download Debian package for WSL
     // DownloadPage.Add('https://aka.ms/wsl-debian-gnulinux', 'debian.appx', '');
     // Download WSL updater
     DownloadPage.Add('https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi', 'wsl.msi', '');

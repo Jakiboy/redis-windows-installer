@@ -6,6 +6,7 @@ if [ -d "build" ]; then
 fi
 mkdir "build"
 sleep 2
+clear
 
 if [ ! -d "compiler" ]; then
     echo "Download ISCC..."
