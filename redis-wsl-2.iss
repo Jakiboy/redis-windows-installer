@@ -1,5 +1,5 @@
 ; ======================================================================================================================
-; Redis - Windows Installer (WSL1)
+; Redis - Windows Installer (WSL2)
 ;
 ; Author: Jihad Sinnaour (Jakiboy) <j.sinnaour.official@gmail.com>
 ; URL: https://github.com/Jakiboy/redis-windows-installer
@@ -48,17 +48,28 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "{tmp}/debian.appx"; DestDir: {tmp}; Flags: deleteafterinstall external;
+Source: "{tmp}/wsl.msi"; DestDir: {tmp}; Flags: deleteafterinstall external;
 
 ; Run:
 
 [Run]
+; Enable Hyper-V
+; (powershell.exe -ExecutionPolicy Bypass -Command "Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Hyper-V -All")
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Hyper-V -All"" "; WorkingDir: {tmp}; Flags: runhidden;
+
 ; Enable WSL
 ; (powershell.exe -ExecutionPolicy Bypass -Command "Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux")
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux"" "; WorkingDir: {tmp}; Flags: runhidden;
 
-; Setup WSL
-; (powershell.exe -ExecutionPolicy Bypass -Command )
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --set-default-version 1"" "; WorkingDir: {tmp}; Flags: runhidden;
+; Install WSL 2 update
+; (msiexec.exe /i "wsl.msi" /qb)
+Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\\wsl.msi"" /qb"; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --update"" "; WorkingDir: {tmp}; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --set-default-version 2"" "; WorkingDir: {tmp}; Flags: runhidden;
+
+; Close Microsoft installer
+; (taskkill /im "msiexec.exe" /f)
+Filename: "taskkill"; Parameters: "/im ""msiexec.exe"" /f"; Flags: runhidden;
 
 ; Install Debian package
 ; (powershell.exe -ExecutionPolicy Bypass -Command "Add-AppxPackage debian.appx")
@@ -102,6 +113,8 @@ begin
     DownloadPage.Clear;
     // Download Debian package for WSL
     DownloadPage.Add('https://aka.ms/wsl-debian-gnulinux', 'debian.appx', '');
+    // Download WSL updater
+    DownloadPage.Add('https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi', 'wsl.msi', '');
     DownloadPage.Show;
     try
       try
