@@ -55,9 +55,6 @@ Source: "{tmp}/debian.appx"; DestDir: {tmp}; Flags: deleteafterinstall external;
 ; Enable WSL
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux"""; Flags: runhidden;
 
-; Setup WSL
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --set-default-version 1"""; Flags: runhidden;
-
 ; Install Debian package
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage {tmp}\\debian.appx"""; WorkingDir: {tmp}; Flags: runhidden;
 
