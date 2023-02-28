@@ -1,5 +1,5 @@
 ; ======================================================================================================================
-; Redis - Windows Installer (WSL1)
+; Redis - Windows Installer
 ;
 ; Author: Jihad Sinnaour (Jakiboy) <j.sinnaour.official@gmail.com>
 ; URL: https://github.com/Jakiboy/redis-windows-installer
@@ -54,6 +54,11 @@ Source: "{tmp}/debian.appx"; DestDir: {tmp}; Flags: deleteafterinstall external;
 [Run]
 ; Enable WSL
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName Microsoft-Windows-Subsystem-Linux"""; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Enable-WindowsOptionalFeature -norestart -Online -FeatureName VirtualMachinePlatform"""; Flags: runhidden;
+
+; Update WSL
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --set-default-version 2"""; Flags: runhidden;
+Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""wsl --update"""; Flags: runhidden;
 
 ; Install Debian package
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -Command ""Add-AppxPackage {tmp}\\debian.appx"""; WorkingDir: {tmp}; Flags: runhidden;
